@@ -15,7 +15,7 @@ class Partner < ApplicationRecord
   require "csv"
 
   belongs_to :organization
-  has_many :distributions
+  has_many :distributions, dependent: :destroy
 
   validates :organization, presence: true
   validates :name, :email, presence: true, uniqueness: true
@@ -25,6 +25,8 @@ class Partner < ApplicationRecord
     where(organization: organization)
       .order(:name)
   }
+
+  after_create :register_on_partnerbase
 
   # better to extract this outside of the model
   def self.import_csv(data, organization_id)
@@ -42,5 +44,9 @@ class Partner < ApplicationRecord
 
   def csv_export_attributes
     [name, email]
+  end
+
+  def register_on_partnerbase
+    UpdateDiaperPartnerJob.perform_async(id)
   end
 end

@@ -33,7 +33,7 @@ gem "paperclip"
 gem "pg", "~> 1.1.3"
 gem "prawn-rails"
 gem "puma"
-gem "rails", "~> 5.2.1"
+gem "rails", "~> 5.2.2"
 gem "react-rails", "~> 2.4.7"
 gem "sass-rails"
 gem "simple_form"
@@ -82,7 +82,7 @@ group :test do
   gem "chromedriver-helper"
   gem "selenium-webdriver"
   gem "rails-controller-testing"
-  gem "webmock", "~> 3.4"
+  gem "webmock", "~> 3.5"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
