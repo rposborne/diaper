@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_19_080442) do
+ActiveRecord::Schema.define(version: 2019_03_31_230015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 2019_02_19_080442) do
     t.string "path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "resolved"
     t.index ["user_id"], name: "index_feedback_messages_on_user_id"
   end
 
@@ -222,6 +223,8 @@ ActiveRecord::Schema.define(version: 2019_02_19_080442) do
     t.string "zipcode"
     t.float "latitude"
     t.float "longitude"
+    t.integer "reminder_days_before_deadline"
+    t.integer "deadline_date"
     t.index ["latitude", "longitude"], name: "index_organizations_on_latitude_and_longitude"
     t.index ["short_name"], name: "index_organizations_on_short_name"
   end
@@ -233,6 +236,7 @@ ActiveRecord::Schema.define(version: 2019_02_19_080442) do
     t.datetime "updated_at", null: false
     t.integer "organization_id"
     t.string "status"
+    t.boolean "send_reminders", default: false, null: false
     t.index ["organization_id"], name: "index_partners_on_organization_id"
   end
 
