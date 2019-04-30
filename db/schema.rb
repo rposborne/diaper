@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_07_203351) do
+ActiveRecord::Schema.define(version: 2019_04_22_130439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,6 +185,16 @@ ActiveRecord::Schema.define(version: 2019_04_07_203351) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "item_requests", force: :cascade do |t|
+    t.bigint "request_id"
+    t.bigint "item_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_requests_on_item_id"
+    t.index ["request_id"], name: "index_item_requests_on_request_id"
+  end
+
   create_table "items", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "category"
@@ -235,7 +245,7 @@ ActiveRecord::Schema.define(version: 2019_04_07_203351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "organization_id"
-    t.string "status"
+    t.integer "status", default: 0
     t.boolean "send_reminders", default: false, null: false
     t.index ["organization_id"], name: "index_partners_on_organization_id"
   end
@@ -257,14 +267,15 @@ ActiveRecord::Schema.define(version: 2019_04_07_203351) do
   create_table "requests", force: :cascade do |t|
     t.bigint "partner_id"
     t.bigint "organization_id"
-    t.string "status", default: "Active"
     t.jsonb "request_items", default: {}
     t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "distribution_id"
+    t.integer "status", default: 0
     t.index ["organization_id"], name: "index_requests_on_organization_id"
     t.index ["partner_id"], name: "index_requests_on_partner_id"
+    t.index ["status"], name: "index_requests_on_status"
   end
 
   create_table "storage_locations", id: :serial, force: :cascade do |t|
@@ -343,6 +354,8 @@ ActiveRecord::Schema.define(version: 2019_04_07_203351) do
   add_foreign_key "distributions", "partners"
   add_foreign_key "distributions", "storage_locations"
   add_foreign_key "donations", "storage_locations"
+  add_foreign_key "item_requests", "items"
+  add_foreign_key "item_requests", "requests"
   add_foreign_key "requests", "organizations"
   add_foreign_key "requests", "partners"
 end

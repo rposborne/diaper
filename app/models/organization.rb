@@ -56,8 +56,7 @@ class Organization < ApplicationRecord
 
   accepts_nested_attributes_for :users
 
-  geocoded_by :address
-  after_validation :geocode, if: ->(obj) { obj.address.present? && obj.address_changed? }
+  include Geocodable
 
   # NOTE: when finding Organizations, use Organization.find_by(short_name: params[:organization_id])
   def to_param
@@ -127,7 +126,13 @@ class Organization < ApplicationRecord
   end
 
   def valid_items
-    items.map(&:partner_key)
+    items.map do |item|
+      {
+        id: item.id,
+        partner_key: item.partner_key,
+        name: item.name
+      }
+    end
   end
 
   private
