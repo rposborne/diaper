@@ -79,6 +79,12 @@ end
 Partner.find_or_create_by!(name: "Pawnee Pregnancy Center", email: "contactus@pawneepregnancy.com", status: :invited) do |partner|
   partner.organization = pdx_org
 end
+Partner.find_or_create_by!(name: "Pawnee Family Center", email: "families@pawneefamilies.org", status: :uninvited) do |partner|
+  partner.organization = pdx_org
+end
+Partner.find_or_create_by!(name: "Pawnee Senior Citizens Center", email: "help@pscc.org", status: :recertification_required) do |partner|
+  partner.organization = pdx_org
+end
 
 inv_arbor = StorageLocation.find_or_create_by!(name: "Bulk Storage Location") do |inventory|
   inventory.address = "Unknown"
@@ -181,10 +187,10 @@ DiaperDriveParticipant.create! business_name: "A Mediocre Place to Collect Diape
                                email: "ok@place.is",
                                organization: pdx_org
 
-Manufacturer.create! name: "Manufacturer 1",
-                     organization: pdx_org
-Manufacturer.create! name: "Manufacturer 2",
-                     organization: pdx_org
+Manufacturer.find_or_create_by! name: "Manufacturer 1",
+                                organization: pdx_org
+Manufacturer.find_or_create_by! name: "Manufacturer 2",
+                                organization: pdx_org
 
 def random_record(klass)
   # FIXME: This produces a deprecation warning. Could replace it with: .order(Arel.sql('random()'))
